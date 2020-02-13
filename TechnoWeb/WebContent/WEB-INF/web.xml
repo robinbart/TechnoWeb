@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd"> 
+<web-app> 
+	<display-name>TechnoWeb</display-name> 
+	<servlet> 
+		<servlet-name>User</servlet-name> 
+		<servlet-class>servlets.User</servlet-class> 
+	</servlet> 
+	<servlet> 
+		<servlet-name>Authentification</servlet-name> 
+		<servlet-class>servlets.Authentification</servlet-class> 
+	</servlet> 
+	<servlet> 
+		<servlet-name>Friend</servlet-name> 
+		<servlet-class>servlets.Friend</servlet-class> 
+	</servlet> 
+	<servlet> 
+		<servlet-name>Message</servlet-name> 
+		<servlet-class>servlets.Message</servlet-class> 
+	</servlet> 
+	<servlet> 
+		<servlet-name>TestDB</servlet-name> 
+		<servlet-class>servlets.TestDBServlet</servlet-class> 
+	</servlet> 
+	<servlet-mapping> 
+		<servlet-name>User</servlet-name> 
+		<url-pattern>/User</url-pattern> 
+	</servlet-mapping> 
+	<servlet-mapping> 
+		<servlet-name>Authentification</servlet-name> 
+		<url-pattern>/Authentification</url-pattern> 
+	</servlet-mapping> 
+	<servlet-mapping> 
+		<servlet-name>Friend</servlet-name> 
+		<url-pattern>/Friend</url-pattern> 
+	</servlet-mapping> 
+	<servlet-mapping> 
+		<servlet-name>Message</servlet-name> 
+		<url-pattern>/Message</url-pattern> 
+	</servlet-mapping> 
+	<servlet-mapping> 
+		<servlet-name>TestDB</servlet-name> 
+		<url-pattern>/TestDB</url-pattern> 
+	</servlet-mapping> 
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/Database</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+</web-app>
