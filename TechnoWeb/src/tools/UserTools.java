@@ -29,9 +29,13 @@ public class UserTools {
 	
 	public static String getUser(String id) {
 		StringBuilder res = new StringBuilder();
-		res.append("select User.id from User where User.id=");
-		res.append(id);
-		res.append(";");
+		if(id != "all") {
+			res.append("select User.id from User where User.id=");
+			res.append(id);
+			res.append(";");
+		}else {
+			res.append("select User.id from User;");
+		}
 		
 		return res.toString();
 	}

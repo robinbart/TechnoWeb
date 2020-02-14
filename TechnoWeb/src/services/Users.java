@@ -1,9 +1,16 @@
 package services;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import bd.Database;
 import tools.ErrorJSON;
+import tools.UserTools;
 
 public class Users{
 	
@@ -23,13 +30,21 @@ public class Users{
 		if(prenom == null) {
 			return ErrorJSON.serviceRefused("Prenom Absent", -1);
 		}
-		if(idDejaPris(id)) {
-			return ErrorJSON.serviceRefused("ID deja pris", -1);
-		}
 		if(passwordNonConforme(mdp)) {
 			return ErrorJSON.serviceRefused("MDP non conforme", -1);
 		}
 		// insert BD
+		try {
+			String sql = UserTools.insertUser(id, mdp, mail, nom, prenom);
+			Connection con = Database.getMySQLConnection();
+			Statement s = con.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return ErrorJSON.serviceAccepted();
 	}
 	
@@ -44,6 +59,18 @@ public class Users{
 			return ErrorJSON.serviceRefused("L'utilisateur n'existe pas", -1);
 		}
 		//select BD
+		try {
+			String id = "";
+			String sql = UserTools.getUser(id);
+			Connection con = Database.getMySQLConnection();
+			Statement s = con.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return ErrorJSON.serviceAccepted();
 	}
 	public static JSONObject deleteUser(String id) {
@@ -54,10 +81,30 @@ public class Users{
 			return ErrorJSON.serviceRefused("L'utilisateur n'existe pas", -1);
 		}
 		//delete BD
+		try {
+			String sql = UserTools.deleteUser(id);
+			Connection con = Database.getMySQLConnection();
+			Statement s = con.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return ErrorJSON.serviceAccepted();
 	}
 	public static JSONObject getUserList() {
 		// select BD
+		try {
+			String sql = UserTools.deleteUser("all");
+			Connection con = Database.getMySQLConnection();
+			Statement s = con.createStatement();
+			ResultSet res = s.executeQuery(sql);
+			con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		return ErrorJSON.serviceAccepted();
 	}
 }
