@@ -2,6 +2,8 @@ package services;
 
 import org.json.JSONObject;
 
+import bd.InteractionBD;
+import tools.AuthentificationTools;
 import tools.ErrorJSON;
 
 public class Authentification {
@@ -13,7 +15,7 @@ public class Authentification {
 			return ErrorJSON.serviceRefused("MDP Absent", -1);
 		}
 		// insert BD
-		return ErrorJSON.serviceAccepted();
+		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(AuthentificationTools.insertAuth(id)));
 	}
 	
 	public static JSONObject logout(String id) {
@@ -21,6 +23,6 @@ public class Authentification {
 			return ErrorJSON.serviceRefused("ID pas co", 1000);
 		}
 		// remove BD 
-		return ErrorJSON.serviceAccepted();
+		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(AuthentificationTools.deleteAuth(id)));
 	}
 }

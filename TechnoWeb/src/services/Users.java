@@ -9,7 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bd.Database;
+import bd.InteractionBD;
 import tools.ErrorJSON;
+import tools.FriendTools;
 import tools.UserTools;
 
 public class Users{
@@ -30,81 +32,33 @@ public class Users{
 		if(prenom == null) {
 			return ErrorJSON.serviceRefused("Prenom Absent", -1);
 		}
-		if(passwordNonConforme(mdp)) {
+		if(UserTools.passwordNonConforme(mdp)) {
 			return ErrorJSON.serviceRefused("MDP non conforme", -1);
 		}
 		// insert BD
-		try {
-			String sql = UserTools.insertUser(id, mdp, mail, nom, prenom);
-			Connection con = Database.getMySQLConnection();
-			Statement s = con.createStatement();
-			ResultSet res = s.executeQuery(sql);
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ErrorJSON.serviceAccepted();
+		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(UserTools.insertUser(id, mdp, mail, nom, prenom)));
+		
 	}
 	
-	public static JSONObject getUser(String nom, String prenom) {
-		if(nom == null) {
-			return ErrorJSON.serviceRefused("Nom Absent", -1);
-		}
-		if(prenom == null) {
-			return ErrorJSON.serviceRefused("Prenom Absent", -1);
-		}
-		if(userInexistant(nom, prenom)) {
+	public static JSONObject getUser(String id) {
+		if(id==null) {
 			return ErrorJSON.serviceRefused("L'utilisateur n'existe pas", -1);
 		}
 		//select BD
-		try {
-			String id = "";
-			String sql = UserTools.getUser(id);
-			Connection con = Database.getMySQLConnection();
-			Statement s = con.createStatement();
-			ResultSet res = s.executeQuery(sql);
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ErrorJSON.serviceAccepted();
+		return ErrorJSON.serviceAccepted(InteractionBD.executeQuery(UserTools.getUser(id)));
 	}
 	public static JSONObject deleteUser(String id) {
 		if(id == null) {
 			return ErrorJSON.serviceRefused("ID Absent", -1);
 		}
-		if(idInexistant(id)) {
-			return ErrorJSON.serviceRefused("L'utilisateur n'existe pas", -1);
-		}
 		//delete BD
-		try {
-			String sql = UserTools.deleteUser(id);
-			Connection con = Database.getMySQLConnection();
-			Statement s = con.createStatement();
-			ResultSet res = s.executeQuery(sql);
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ErrorJSON.serviceAccepted();
+		
+		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(UserTools.deleteUser(id)));
+
 	}
 	public static JSONObject getUserList() {
 		// select BD
-		try {
-			String sql = UserTools.deleteUser("all");
-			Connection con = Database.getMySQLConnection();
-			Statement s = con.createStatement();
-			ResultSet res = s.executeQuery(sql);
-			con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		return ErrorJSON.serviceAccepted();
+		return ErrorJSON.serviceAccepted(InteractionBD.executeQuery(UserTools.getUser("all")));
+
 	}
 }
