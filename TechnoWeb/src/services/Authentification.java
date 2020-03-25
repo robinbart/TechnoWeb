@@ -14,6 +14,9 @@ public class Authentification {
 		if(mdp == null) {
 			return ErrorJSON.serviceRefused("MDP Absent", -1);
 		}
+		if(InteractionBD.isIdConnected(AuthentificationTools.isIdConnnected(id))) {
+			return ErrorJSON.serviceRefused("ID deja connecté", -1);
+		}
 		// insert BD
 		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(AuthentificationTools.insertAuth(id)));
 	}
