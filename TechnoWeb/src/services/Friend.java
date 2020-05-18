@@ -31,7 +31,7 @@ public class Friend {
 		return ErrorJSON.serviceAccepted(InteractionBD.updateBD(FriendTools.insertFriend(id1,id2)));
 	}
 	
-	public static JSONObject getFrienList(String id) {
+	public static JSONObject getFriendList(String id) {
 		if(id == null) {
 			return ErrorJSON.serviceRefused("ID Absent", -1);
 		}
